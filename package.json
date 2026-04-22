@@ -1,0 +1,23 @@
+{
+  "name": "loop-mcp",
+  "private": true,
+  "packageManager": "pnpm@10.13.1",
+  "scripts": {
+    "build": "turbo run build",
+    "dev": "turbo run dev --parallel",
+    "typecheck": "turbo run typecheck",
+    "clean": "turbo run clean && rm -rf node_modules",
+    "harness:run": "pnpm --filter @carely/codex-harness run run",
+    "harness:smoke": "pnpm --filter @carely/codex-harness run smoke",
+    "harness:smoke:batch2": "pnpm --filter @carely/codex-harness run smoke:batch2",
+    "harness:smoke:details": "pnpm --filter @carely/codex-harness run smoke:details",
+    "harness:smoke:write": "pnpm --filter @carely/codex-harness run smoke:write"
+  },
+  "devDependencies": {
+    "@types/node": "^24.0.0",
+    "ts-node": "^10.9.2",
+    "tsx": "^4.20.0",
+    "turbo": "^2.5.4",
+    "typescript": "^5.8.3"
+  }
+}

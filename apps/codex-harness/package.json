@@ -1,0 +1,18 @@
+{
+  "name": "@carely/codex-harness",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "run": "node dist/run.js",
+    "smoke": "node dist/smoke.js",
+    "smoke:batch2": "node dist/batch2-smoke.js",
+    "smoke:details": "node dist/details-smoke.js",
+    "smoke:write": "node dist/write-smoke.js",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "clean": "rm -rf dist"
+  },
+  "dependencies": {
+    "dotenv": "^16.6.1"
+  }
+}
