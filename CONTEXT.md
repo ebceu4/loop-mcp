@@ -35,6 +35,8 @@ The target is a Loop/Mattermost-compatible MCP server that supports:
   - Loop API auth + REST client
 - `packages/shared`
   - shared tool catalog and helpers
+- `qa/`
+  - markdown scenario pack and QA contract docs
 
 ## What already works
 
@@ -48,7 +50,10 @@ The target is a Loop/Mattermost-compatible MCP server that supports:
   - `loop_list_teams`
   - `loop_list_channels`
   - `loop_list_channel_posts`
-- write tools are registered as placeholders:
+- scenario-driven QA contract exists for:
+  - live tool inventory discovery
+  - channel routing by human-readable name
+- implemented write tools:
   - `loop_create_post`
   - `loop_reply_to_post`
   - `loop_update_post`
@@ -75,6 +80,9 @@ cd /Users/ebceu4/projects/carely/loop-mcp
 pnpm install
 pnpm build
 pnpm typecheck
+pnpm harness:scenario -- --scenario tool-inventory-contract
+pnpm harness:scenario -- --scenario named-channel-routing
+pnpm harness:suite
 ```
 
 Run smoke test with login/password:
@@ -96,17 +104,9 @@ pnpm harness:smoke
 
 ## Next recommended steps
 
-1. Replace write placeholders with real Loop API calls:
-   - create post
-   - reply to post
-   - update post
-   - delete post
-2. Add focused smoke tests for write flows against a safe test channel.
-3. Add `loop_get_post_thread`.
-4. Add channel/user resolution helpers:
-   - `loop_resolve_channel_by_name`
-   - `loop_resolve_user_by_username`
-5. Improve output formatting so tools return compact, model-friendly summaries instead of only raw JSON.
+1. Add a scenario that exercises the full `resolve channel -> create post -> inspect thread` path against a safe channel.
+2. Add a negative scenario for a missing channel name so routing failures are explicit.
+3. Keep improving tool descriptions and catalog summaries where model routing still drifts.
 
 ## Constraints
 

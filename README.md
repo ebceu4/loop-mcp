@@ -33,9 +33,23 @@ pnpm build
 pnpm harness:smoke
 ```
 
+6. Run a markdown QA scenario:
+
+```bash
+pnpm harness:scenario -- --scenario named-channel-routing
+```
+
 ## Current scope
 
 - Loop auth via `LOOP_TOKEN` or `LOOP_LOGIN_ID` / `LOOP_PASSWORD`
-- Read tools implemented first
-- Write tools registered as placeholders for now
+- Read tools implemented and covered by scenario-driven QA
+- Write tools implemented, with live validation depending on account permissions
 - Attachments and search deferred
+
+## QA
+
+- `pnpm harness:scenario -- --scenario tool-inventory-contract`
+- `pnpm harness:scenario -- --scenario named-channel-routing`
+- `pnpm harness:suite`
+
+Scenario definitions live under `qa/scenarios/` and are written as markdown-first QA contracts.

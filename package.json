@@ -8,6 +8,8 @@
     "typecheck": "turbo run typecheck",
     "clean": "turbo run clean && rm -rf node_modules",
     "harness:run": "pnpm --filter @carely/codex-harness run run",
+    "harness:scenario": "pnpm --filter @carely/codex-harness run scenario",
+    "harness:suite": "pnpm --filter @carely/codex-harness run suite",
     "harness:smoke": "pnpm --filter @carely/codex-harness run smoke",
     "harness:smoke:batch2": "pnpm --filter @carely/codex-harness run smoke:batch2",
     "harness:smoke:details": "pnpm --filter @carely/codex-harness run smoke:details",

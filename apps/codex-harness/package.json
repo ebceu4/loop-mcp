@@ -5,6 +5,8 @@
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "run": "node dist/run.js",
+    "scenario": "node dist/scenario.js",
+    "suite": "node dist/suite.js",
     "smoke": "node dist/smoke.js",
     "smoke:batch2": "node dist/batch2-smoke.js",
     "smoke:details": "node dist/details-smoke.js",

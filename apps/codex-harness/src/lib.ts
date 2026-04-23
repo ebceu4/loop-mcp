@@ -11,6 +11,15 @@ export type HarnessRunOptions = {
   prompt: string;
   mode?: HarnessMode;
   model?: string;
+  artifactName?: string;
+  skipBuild?: boolean;
+};
+
+export type HarnessRunResult = {
+  output: string;
+  stdout: string;
+  stderr: string;
+  outputFile: string;
 };
 
 type LoopEnv = {
@@ -21,7 +30,7 @@ type LoopEnv = {
 };
 
 const here = path.dirname(fileURLToPath(import.meta.url));
-const repoRoot = path.resolve(here, "../../..");
+export const repoRoot = path.resolve(here, "../../..");
 
 function shellQuote(value: string) {
   return JSON.stringify(value);
@@ -74,6 +83,11 @@ function buildServer() {
   }
 }
 
+export function prepareHarness() {
+  readLoopEnv();
+  buildServer();
+}
+
 function createConfigToml(loopEnv: LoopEnv) {
   const serverEntry = [
     "[mcp_servers.loop_under_test]",
@@ -120,11 +134,21 @@ function createIsolatedCodexHome(configToml: string) {
   return { tempHome, codexHome };
 }
 
-function runCodexWithOverlay(prompt: string, model: string | undefined, configToml: string) {
+function createOutputFile(artifactName: string | undefined) {
+  const safeName = (artifactName ?? "last-message").replace(/[^a-zA-Z0-9._/-]+/g, "-");
+  const outputFile = path.join(repoRoot, ".codex-harness", `${safeName}.txt`);
+  mkdirSync(path.dirname(outputFile), { recursive: true });
+  return outputFile;
+}
+
+function runCodexWithOverlay(
+  prompt: string,
+  model: string | undefined,
+  artifactName: string | undefined,
+): HarnessRunResult {
   const loopEnv = readLoopEnv();
   const serverPath = path.join(repoRoot, "apps/mcp-server/dist/index.js");
-  const outputFile = path.join(repoRoot, ".codex-harness", "last-message.txt");
-  mkdirSync(path.dirname(outputFile), { recursive: true });
+  const outputFile = createOutputFile(artifactName);
 
   const args = [
     "exec",
@@ -176,33 +200,47 @@ function runCodexWithOverlay(prompt: string, model: string | undefined, configTo
 
   const result = spawnSync("codex", args, {
     cwd: repoRoot,
-    stdio: "inherit",
+    stdio: "pipe",
     env: process.env,
+    encoding: "utf8",
   });
 
   if (result.status !== 0) {
-    throw new Error("Codex overlay run failed.");
+    throw new Error(
+      [
+        "Codex overlay run failed.",
+        result.stdout?.trim() ? `stdout:\n${result.stdout}` : "",
+        result.stderr?.trim() ? `stderr:\n${result.stderr}` : "",
+      ]
+        .filter(Boolean)
+        .join("\n\n"),
+    );
   }
 
-  return readFileSync(outputFile, "utf8").trim();
+  return {
+    output: readFileSync(outputFile, "utf8").trim(),
+    stdout: result.stdout ?? "",
+    stderr: result.stderr ?? "",
+    outputFile,
+  };
 }
 
-export function runHarness(options: HarnessRunOptions) {
+export function runHarness(options: HarnessRunOptions): HarnessRunResult {
   const mode = options.mode ?? "isolated-home";
   const model = options.model ?? process.env.CODEX_MODEL;
 
-  buildServer();
+  if (!options.skipBuild) {
+    buildServer();
+  }
 
   if (mode === "overlay") {
-    const output = runCodexWithOverlay(options.prompt, model, "");
-    return { output };
+    return runCodexWithOverlay(options.prompt, model, options.artifactName);
   }
 
   const loopEnv = readLoopEnv();
   const configToml = createConfigToml(loopEnv);
   const { tempHome, codexHome } = createIsolatedCodexHome(configToml);
-  const outputFile = path.join(repoRoot, ".codex-harness", "last-message.txt");
-  mkdirSync(path.dirname(outputFile), { recursive: true });
+  const outputFile = createOutputFile(options.artifactName);
 
   const args = [
     "exec",
@@ -231,16 +269,29 @@ export function runHarness(options: HarnessRunOptions) {
   try {
     const result = spawnSync("codex", args, {
       cwd: repoRoot,
-      stdio: "inherit",
+      stdio: "pipe",
       env,
+      encoding: "utf8",
     });
 
     if (result.status !== 0) {
-      throw new Error("Codex isolated harness run failed.");
+      throw new Error(
+        [
+          "Codex isolated harness run failed.",
+          result.stdout?.trim() ? `stdout:\n${result.stdout}` : "",
+          result.stderr?.trim() ? `stderr:\n${result.stderr}` : "",
+        ]
+          .filter(Boolean)
+          .join("\n\n"),
+      );
     }
 
-    const output = readFileSync(outputFile, "utf8").trim();
-    return { output };
+    return {
+      output: readFileSync(outputFile, "utf8").trim(),
+      stdout: result.stdout ?? "",
+      stderr: result.stderr ?? "",
+      outputFile,
+    };
   } finally {
     rmSync(tempHome, { recursive: true, force: true });
   }
