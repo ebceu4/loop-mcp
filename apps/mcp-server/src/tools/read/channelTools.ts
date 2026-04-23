@@ -17,6 +17,7 @@ export function registerChannelTools(server: McpServer, client: LoopClient) {
 
   server.tool(
     "loop_list_channels",
+    "List channels for a team so the agent can inspect candidates when only a vague or partial channel reference is known.",
     {
       teamId: z.string().optional(),
     },
@@ -45,6 +46,7 @@ export function registerChannelTools(server: McpServer, client: LoopClient) {
 
   server.tool(
     "loop_resolve_channel_by_name",
+    "Resolve a human-readable channel name into a canonical channel object. Use this when the user says to find a channel by name before posting or reading.",
     {
       channelName: z.string().min(1),
       teamId: z.string().optional(),

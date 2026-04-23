@@ -5,7 +5,12 @@ import { z } from "zod";
 import { jsonResult } from "../../lib/results.js";
 
 export function registerAccountTools(server: McpServer, client: LoopClient) {
-  server.tool("loop_get_me", {}, async () => jsonResult(await client.getMe()));
+  server.tool(
+    "loop_get_me",
+    "Return the currently authenticated Loop account. Use this to confirm who is acting before resolving teams, channels, or recipients.",
+    {},
+    async () => jsonResult(await client.getMe()),
+  );
 
   server.tool(
     "loop_get_user",
@@ -28,6 +33,7 @@ export function registerAccountTools(server: McpServer, client: LoopClient) {
 
   server.tool(
     "loop_resolve_user_by_username",
+    "Resolve a human-readable Loop username into a canonical user record. Use this when the user refers to a teammate by username instead of userId.",
     {
       username: z.string().min(1),
     },

@@ -8,7 +8,11 @@ import {
 import { jsonResult } from "../lib/results.js";
 
 export function registerInventoryTool(server: McpServer) {
-  server.tool("loop_tool_inventory", {}, async () =>
+  server.tool(
+    "loop_tool_inventory",
+    "Return the live Loop MCP tool surface and catalog metadata. Use this first when the request depends on which read or write tools are currently available.",
+    {},
+    async () =>
     jsonResult({
       read_tools: LOOP_READ_TOOLS,
       write_tools: LOOP_WRITE_TOOLS,
