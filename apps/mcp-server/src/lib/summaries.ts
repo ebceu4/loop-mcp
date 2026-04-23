@@ -4,6 +4,8 @@ import type {
   LoopChannelStats,
   LoopPost,
   LoopTeamMember,
+  LoopTeamUnread,
+  LoopUserStatus,
 } from "@carely/loop-client";
 
 export function summarizeChannel(channel: LoopChannel) {
@@ -71,5 +73,28 @@ export function summarizeTeamMember(member: LoopTeamMember) {
     scheme_user: member.scheme_user,
     scheme_admin: member.scheme_admin,
     explicit_roles: member.explicit_roles,
+  };
+}
+
+export function summarizeUserStatus(status: LoopUserStatus) {
+  return {
+    user_id: status.user_id,
+    status: status.status,
+    manual: status.manual,
+    last_activity_at: status.last_activity_at,
+    dnd_end_time: status.dnd_end_time,
+  };
+}
+
+export function summarizeTeamUnread(unread: LoopTeamUnread) {
+  return {
+    team_id: unread.team_id,
+    msg_count: unread.msg_count,
+    mention_count: unread.mention_count,
+    mention_count_root: unread.mention_count_root,
+    msg_count_root: unread.msg_count_root,
+    thread_count: unread.thread_count,
+    thread_mention_count: unread.thread_mention_count,
+    thread_urgent_mention_count: unread.thread_urgent_mention_count,
   };
 }

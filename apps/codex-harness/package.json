@@ -9,6 +9,8 @@
     "suite": "node dist/suite.js",
     "smoke": "node dist/smoke.js",
     "smoke:batch2": "node dist/batch2-smoke.js",
+    "smoke:batch3": "node dist/batch3-smoke.js",
+    "smoke:mentions": "node dist/mentions-smoke.js",
     "smoke:details": "node dist/details-smoke.js",
     "smoke:write": "node dist/write-smoke.js",
     "typecheck": "tsc -p tsconfig.json --noEmit",

@@ -58,6 +58,25 @@ export type LoopTeamMember = {
   explicit_roles?: string;
 };
 
+export type LoopUserStatus = {
+  user_id: string;
+  status: string;
+  manual?: boolean;
+  last_activity_at?: number;
+  dnd_end_time?: number;
+};
+
+export type LoopTeamUnread = {
+  team_id: string;
+  msg_count?: number;
+  mention_count?: number;
+  mention_count_root?: number;
+  msg_count_root?: number;
+  thread_count?: number;
+  thread_mention_count?: number;
+  thread_urgent_mention_count?: number;
+};
+
 export type LoopPost = {
   id: string;
   user_id: string;

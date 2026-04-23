@@ -10,7 +10,9 @@ import type {
   LoopPostsResponse,
   LoopTeam,
   LoopTeamMember,
+  LoopTeamUnread,
   LoopUser,
+  LoopUserStatus,
 } from "./types.js";
 
 export class LoopClient {
@@ -42,12 +44,42 @@ export class LoopClient {
     });
   }
 
+  async getUsersByUsernames(usernames: string[]) {
+    return this.requestJson<LoopUser[]>("/api/v4/users/usernames", {
+      method: "POST",
+      body: JSON.stringify(usernames),
+    });
+  }
+
+  async getUserStatusesByIds(userIds: string[]) {
+    return this.requestJson<LoopUserStatus[]>("/api/v4/users/status/ids", {
+      method: "POST",
+      body: JSON.stringify(userIds),
+    });
+  }
+
   async getTeam(teamId: string) {
     return this.requestJson<LoopTeam>(`/api/v4/teams/${teamId}`);
   }
 
+  async getTeamMember(teamId: string, userId: string) {
+    return this.requestJson<LoopTeamMember>(
+      `/api/v4/teams/${teamId}/members/${userId}`,
+    );
+  }
+
+  async resolveTeamByName(teamName: string) {
+    return this.requestJson<LoopTeam>(
+      `/api/v4/teams/name/${encodeURIComponent(teamName)}`,
+    );
+  }
+
   async listTeams() {
     return this.requestJson<LoopTeam[]>("/api/v4/users/me/teams");
+  }
+
+  async listMyTeamUnreads() {
+    return this.requestJson<LoopTeamUnread[]>("/api/v4/users/me/teams/unread");
   }
 
   async listTeamMembers(
