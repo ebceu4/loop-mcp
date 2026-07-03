@@ -15,7 +15,7 @@ const preferredChannel = process.env.LOOP_SMOKE_CHANNEL_NAME || "test-it-help";
 
 const prompt = [
   "Use loop_list_teams first.",
-  "Then call loop_list_channels for the first team and choose the channel named",
+  "Then call loop_list_my_team_channels for the first team and choose the channel named",
   JSON.stringify(preferredChannel),
   "if it exists, otherwise choose the first channel with type O or P.",
   "Then call loop_get_my_channel_mention_state for that chosen channel.",

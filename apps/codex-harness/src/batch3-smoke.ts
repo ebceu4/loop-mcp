@@ -13,7 +13,7 @@ dotenv.config({ path: path.join(repoRoot, ".env"), override: false });
 
 const prompt = [
   "Use loop_get_me and loop_list_teams first.",
-  "Then call loop_get_team_member for the current user in the first team.",
+  "Then call loop_get_team_membership for the current user in the first team.",
   "Then call loop_resolve_team_by_name using the first team's name.",
   "Then call loop_get_users_by_usernames using an array with the current username and igor.f.",
   "Then call loop_get_user_statuses_by_ids using the current user id and the first returned user id from the usernames lookup that is not the current user when available, otherwise just the current user id.",

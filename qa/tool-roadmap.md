@@ -8,7 +8,8 @@ This file is the QA-facing contract for the Loop MCP surface.
 - Read flows must support:
   - viewer discovery
   - team discovery
-  - channel discovery by list and by exact human-readable name
+  - channel discovery by current-user joined-channel list, by team-wide public directory, and by exact human-readable name
+  - direct-message channel discovery with resolved counterpart names when available
   - post/thread inspection
 - Write flows must support:
   - create a root post once `channelId` is known
@@ -19,7 +20,9 @@ This file is the QA-facing contract for the Loop MCP surface.
 ## Routing expectations
 
 - When the user says "find channel `<name>`", the agent should prefer `loop_resolve_channel_by_name`.
-- When the user gives only a vague or partial channel reference, the agent should inspect candidates via `loop_list_channels` before choosing.
+- When the user gives only a vague or partial channel reference within channels they have joined, the agent should inspect candidates via `loop_list_my_team_channels` before choosing.
+- When the user asks for the team-wide public directory, the agent should use `loop_list_team_public_channels` rather than the current-user joined-channel list.
+- When the user asks about direct-message channels, `loop_list_my_team_channels` should expose resolved counterpart names instead of forcing the agent to parse technical DM channel ids.
 - When the user wants to post a new message to a channel, the agent should first resolve or confirm `channelId`, then call `loop_create_post`.
 - When the user wants to answer in an existing thread, the agent should use `loop_reply_to_post` rather than creating a second root post.
 

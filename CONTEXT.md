@@ -48,11 +48,13 @@ The target is a Loop/Mattermost-compatible MCP server that supports:
   - `loop_tool_inventory`
   - `loop_get_me`
   - `loop_list_teams`
-  - `loop_list_channels`
+  - `loop_list_my_team_channels`
   - `loop_list_channel_posts`
 - scenario-driven QA contract exists for:
   - live tool inventory discovery
   - channel routing by human-readable name
+  - direct-message partner name resolution from channel listing
+  - distinction between current-user joined channels and team-wide public channel directory
 - implemented write tools:
   - `loop_create_post`
   - `loop_reply_to_post`
@@ -63,7 +65,7 @@ The target is a Loop/Mattermost-compatible MCP server that supports:
 
 The harness was tested against the real server `https://carely.loop.ru`.
 
-Successful smoke result:
+Successful smoke result before DM enrichment:
 
 ```json
 {"tool_inventory_seen":true,"username":"naydenov.yuri","roles":"system_guest","channel_count":15,"first_channel_name":"58f9eai1w78sjnbzjh4qcg3q3h__eowxr7wa13bbmn6uhm7n9bigww"}
@@ -82,6 +84,8 @@ pnpm build
 pnpm typecheck
 pnpm harness:scenario -- --scenario tool-inventory-contract
 pnpm harness:scenario -- --scenario named-channel-routing
+pnpm harness:scenario -- --scenario direct-channel-partner-resolution
+pnpm harness:scenario -- --scenario team-public-channel-directory
 pnpm harness:suite
 ```
 

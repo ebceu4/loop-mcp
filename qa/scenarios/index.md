@@ -4,6 +4,9 @@ Single source of truth for markdown-driven MCP smoke and regression scenarios.
 
 ## Current scenarios
 
+- `direct-channel-partner-resolution`
+- `team-public-channels-not-joined`
+- `team-public-channel-directory`
 - `tool-inventory-contract`
 - `named-channel-routing`
 

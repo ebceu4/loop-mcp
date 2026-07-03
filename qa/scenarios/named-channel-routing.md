@@ -31,7 +31,7 @@ evaluation:
     - loop_tool_inventory
     - loop_get_me
     - loop_list_teams
-    - loop_list_channels
+    - loop_list_my_team_channels
     - loop_resolve_channel_by_name
   expectJsonPaths:
     - viewer_username
