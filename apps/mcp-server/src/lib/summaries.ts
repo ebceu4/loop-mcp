@@ -6,7 +6,7 @@ import type {
   LoopTeamMember,
   LoopTeamUnread,
   LoopUserStatus,
-} from "@carely/loop-client";
+} from "../loop-client/index.js";
 
 export function summarizeChannel(channel: LoopChannel) {
   return {

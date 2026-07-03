@@ -1,4 +1,4 @@
-import type { LoopClient } from "@carely/loop-client";
+import type { LoopClient } from "../../loop-client/index.js";
 import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { z } from "zod";
 
@@ -8,9 +8,20 @@ import {
   summarizeTeamMember,
 } from "../../lib/summaries.js";
 
+async function buildTeamChannelMembershipsResult(client: LoopClient, teamId: string) {
+  const memberships = await client.listMyTeamChannelMembers(teamId);
+
+  return {
+    team_id: teamId,
+    count: memberships.length,
+    memberships: memberships.map(summarizeChannelMember),
+  };
+}
+
 export function registerMembershipTools(server: McpServer, client: LoopClient) {
   server.tool(
     "loop_list_team_members",
+    "List team members for a team. Use this for team roster inspection when you need team membership rather than per-channel membership.",
     {
       teamId: z.string(),
       page: z.number().int().nonnegative().default(0),
@@ -30,23 +41,17 @@ export function registerMembershipTools(server: McpServer, client: LoopClient) {
   );
 
   server.tool(
-    "loop_list_my_team_channel_members",
+    "loop_list_team_channel_memberships",
+    "List channel membership rows visible to the current user for a team. Use this as a team-scoped channel membership index, for example to resolve direct-message counterparts from channel_id -> user_id mappings.",
     {
       teamId: z.string(),
     },
-    async ({ teamId }) => {
-      const memberships = await client.listMyTeamChannelMembers(teamId);
-
-      return jsonResult({
-        team_id: teamId,
-        count: memberships.length,
-        memberships: memberships.map(summarizeChannelMember),
-      });
-    },
+    async ({ teamId }) => jsonResult(await buildTeamChannelMembershipsResult(client, teamId)),
   );
 
   server.tool(
     "loop_list_channel_members",
+    "List members in a specific channel.",
     {
       channelId: z.string(),
       page: z.number().int().nonnegative().default(0),
@@ -66,7 +71,8 @@ export function registerMembershipTools(server: McpServer, client: LoopClient) {
   );
 
   server.tool(
-    "loop_get_channel_member",
+    "loop_get_channel_membership",
+    "Fetch the membership row for one user in one channel.",
     {
       channelId: z.string(),
       userId: z.string(),

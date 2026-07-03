@@ -1,4 +1,4 @@
-import type { LoopChannel, LoopChannelMember, LoopTeamUnread } from "@carely/loop-client";
+import type { LoopChannel, LoopChannelMember, LoopTeamUnread } from "../loop-client/index.js";
 
 export function mentionScore(member: LoopChannelMember) {
   return (

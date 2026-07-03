@@ -1,4 +1,4 @@
-import type { LoopClient } from "@carely/loop-client";
+import type { LoopClient } from "../loop-client/index.js";
 
 export async function resolveTeamId(client: LoopClient, teamId?: string) {
   if (teamId) {

@@ -1,4 +1,4 @@
-import { sanitizeBaseUrl } from "@carely/loop-shared";
+import { sanitizeBaseUrl } from "../loop-shared/index.js";
 
 import type {
   CreateLoopPostInput,

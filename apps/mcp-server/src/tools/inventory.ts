@@ -3,7 +3,7 @@ import {
   LOOP_READ_TOOLS,
   LOOP_TOOL_CATALOG,
   LOOP_WRITE_TOOLS,
-} from "@carely/loop-shared";
+} from "../loop-shared/index.js";
 
 import { jsonResult } from "../lib/results.js";
 

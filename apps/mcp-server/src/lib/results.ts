@@ -1,4 +1,4 @@
-import { jsonText } from "@carely/loop-shared";
+import { jsonText } from "../loop-shared/index.js";
 
 export function textResult(text: string) {
   return {

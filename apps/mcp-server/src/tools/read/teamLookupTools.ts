@@ -1,4 +1,4 @@
-import type { LoopClient } from "@carely/loop-client";
+import type { LoopClient } from "../../loop-client/index.js";
 import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { z } from "zod";
 
@@ -7,7 +7,8 @@ import { summarizeTeamMember, summarizeTeamUnread } from "../../lib/summaries.js
 
 export function registerTeamLookupTools(server: McpServer, client: LoopClient) {
   server.tool(
-    "loop_get_team_member",
+    "loop_get_team_membership",
+    "Fetch the membership row for one user in one team.",
     {
       teamId: z.string(),
       userId: z.string(),
@@ -32,6 +33,7 @@ export function registerTeamLookupTools(server: McpServer, client: LoopClient) {
 
   server.tool(
     "loop_list_my_team_unreads",
+    "List unread counters for the current user across their teams.",
     {},
     async () =>
       jsonResult({

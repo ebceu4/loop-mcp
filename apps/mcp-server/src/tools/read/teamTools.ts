@@ -1,4 +1,4 @@
-import type { LoopClient } from "@carely/loop-client";
+import type { LoopClient } from "../../loop-client/index.js";
 import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { z } from "zod";
 
@@ -14,6 +14,7 @@ export function registerTeamTools(server: McpServer, client: LoopClient) {
 
   server.tool(
     "loop_get_team",
+    "Fetch one team by teamId.",
     {
       teamId: z.string(),
     },

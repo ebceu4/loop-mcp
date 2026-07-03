@@ -70,7 +70,7 @@ function readLoopEnv(): LoopEnv {
 function buildServer() {
   const result = spawnSync(
     "pnpm",
-    ["--dir", repoRoot, "--filter", "@carely/loop-mcp-server", "build"],
+    ["--dir", repoRoot, "--filter", "@carely/loop-mcp", "build"],
     {
       cwd: repoRoot,
       stdio: "inherit",
@@ -79,7 +79,7 @@ function buildServer() {
   );
 
   if (result.status !== 0) {
-    throw new Error("Failed to build @carely/loop-mcp-server.");
+    throw new Error("Failed to build @carely/loop-mcp.");
   }
 }
 

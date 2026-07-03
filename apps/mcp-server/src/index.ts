@@ -1,8 +1,13 @@
+#!/usr/bin/env node
+
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
-import { createLoopClientFromEnv } from "@carely/loop-client";
+import { createLoopClientFromEnv } from "./loop-client/index.js";
 
+import { loadWorkingDirEnvFiles } from "./lib/env.js";
 import { registerTools } from "./registerTools.js";
+
+loadWorkingDirEnvFiles();
 
 const client = createLoopClientFromEnv();
 

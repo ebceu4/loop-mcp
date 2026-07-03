@@ -1,4 +1,4 @@
-import type { LoopClient } from "@carely/loop-client";
+import type { LoopClient } from "../../loop-client/index.js";
 import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { z } from "zod";
 
@@ -8,6 +8,7 @@ import { summarizePost } from "../../lib/summaries.js";
 export function registerPostTools(server: McpServer, client: LoopClient) {
   server.tool(
     "loop_get_post",
+    "Fetch one post by postId.",
     {
       postId: z.string(),
     },
@@ -19,6 +20,7 @@ export function registerPostTools(server: McpServer, client: LoopClient) {
 
   server.tool(
     "loop_list_channel_posts",
+    "List posts in a channel with pagination, returning posts in server order for the requested page.",
     {
       channelId: z.string(),
       page: z.number().int().nonnegative().default(0),
@@ -39,6 +41,7 @@ export function registerPostTools(server: McpServer, client: LoopClient) {
 
   server.tool(
     "loop_list_pinned_posts",
+    "List pinned posts for a channel.",
     {
       channelId: z.string(),
     },
@@ -56,6 +59,7 @@ export function registerPostTools(server: McpServer, client: LoopClient) {
 
   server.tool(
     "loop_get_post_thread",
+    "Fetch the full thread for a root post.",
     {
       postId: z.string(),
     },
